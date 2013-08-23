@@ -30,7 +30,7 @@
 
 @implementation JZLocationConverter
 
-+(double)transformLat:(double)x bdLon:(double)y
++ (double)transformLat:(double)x bdLon:(double)y
 {
     double ret = LAT_OFFSET_0(x, y);
     ret += LAT_OFFSET_1;
@@ -39,7 +39,7 @@
     return ret;
 }
 
-+(double)transformLon:(double)x bdLon:(double)y
++ (double)transformLon:(double)x bdLon:(double)y
 {
     double ret = LON_OFFSET_0(x, y);
     ret += LON_OFFSET_1;
@@ -48,7 +48,7 @@
     return ret;
 }
 
-+(BOOL)outOfChina:(double)lat bdLon:(double)lon
++ (BOOL)outOfChina:(double)lat bdLon:(double)lon
 {
     if (lon < RANGE_LON_MIN || lon > RANGE_LON_MAX)
         return true;
@@ -57,7 +57,7 @@
     return false;
 }
 
-+(CLLocationCoordinate2D)gcj02Encrypt:(double)ggLat bdLon:(double)ggLon
++ (CLLocationCoordinate2D)gcj02Encrypt:(double)ggLat bdLon:(double)ggLon
 {
     CLLocationCoordinate2D resPoint;
     double mgLat;
@@ -83,7 +83,7 @@
     return resPoint;
 }
 
-+(CLLocationCoordinate2D)bd09Decrypt:(double)bdLat bdLon:(double)bdLon
++ (CLLocationCoordinate2D)bd09Decrypt:(double)bdLat bdLon:(double)bdLon
 {
     CLLocationCoordinate2D gcjPt;
     double x = bdLon - 0.0065, y = bdLat - 0.006;
