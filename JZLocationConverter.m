@@ -28,6 +28,8 @@
 #define jzA 6378245.0
 #define jzEE 0.00669342162296594323
 
+
+
 @implementation JZLocationConverter
 
 + (double)transformLat:(double)x bdLon:(double)y
@@ -83,6 +85,16 @@
     return resPoint;
 }
 
++ (CLLocationCoordinate2D)gcj02Decrypt:(double)gjLat gjLon:(double)gjLon {
+    CLLocationCoordinate2D  gPt = [self gcj02Encrypt:gjLat bdLon:gjLon];
+    double dLon = gPt.longitude - gjLon;
+    double dLat = gPt.latitude - gjLat;
+    CLLocationCoordinate2D pt;
+    pt.latitude = gjLat - dLat;
+    pt.longitude = gjLon - dLon;
+    return pt;
+}
+
 + (CLLocationCoordinate2D)bd09Decrypt:(double)bdLat bdLon:(double)bdLon
 {
     CLLocationCoordinate2D gcjPt;
@@ -105,10 +117,17 @@
     return bdPt;
 }
 
+
 + (CLLocationCoordinate2D)wgs84ToGcj02:(CLLocationCoordinate2D)location
 {
     return [self gcj02Encrypt:location.latitude bdLon:location.longitude];
 }
+
++ (CLLocationCoordinate2D)gcj02ToWgs84:(CLLocationCoordinate2D)location
+{
+    return [self gcj02Decrypt:location.latitude gjLon:location.longitude];
+}
+
 
 + (CLLocationCoordinate2D)wgs84ToBd09:(CLLocationCoordinate2D)location
 {
@@ -126,4 +145,11 @@
 {
     return [self bd09Decrypt:location.latitude bdLon:location.longitude];
 }
+
++ (CLLocationCoordinate2D)bd09ToWgs84:(CLLocationCoordinate2D)location
+{
+    CLLocationCoordinate2D gcj02 = [self bd09ToGcj02:location];
+    return [self gcj02Decrypt:gcj02.latitude gjLon:gcj02.longitude];
+}
+
 @end
