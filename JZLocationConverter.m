@@ -22,45 +22,16 @@
 #define RANGE_LON_MIN 72.004
 #define RANGE_LAT_MAX 55.8271
 #define RANGE_LAT_MIN 0.8293
-
-// a = 6378245.0, 1/f = 298.3
+// jzA = 6378245.0, 1/f = 298.3
 // b = a * (1 - f)
 // ee = (a^2 - b^2) / a^2;
-const double a = 6378245.0;
-const double ee = 0.00669342162296594323;
+#define jzA 6378245.0
+#define jzEE 0.00669342162296594323
 
-bool outOfChina(double lat, double lon);
-double transformLat(double x, double y);
-double transformLon(double x, double y);
+@implementation JZLocationConverter
 
-CLLocationCoordinate2D gcj02Encrypt(double wgLat, double wgLon) {
-    CLLocationCoordinate2D resPoint;
-    double mgLat;
-    double mgLon;
-    if (outOfChina(wgLat, wgLon)) {
-        resPoint.latitude = wgLat;
-        resPoint.longitude = wgLon;
-        return resPoint;
-    }
-    double dLat = transformLat(wgLon - 105.0, wgLat - 35.0);
-    double dLon = transformLon(wgLon - 105.0, wgLat - 35.0);
-    double radLat = wgLat / 180.0 * M_PI;
-    double magic = sin(radLat);
-    magic = 1 - ee * magic * magic;
-    double sqrtMagic = sqrt(magic);
-    dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * M_PI);
-    dLon = (dLon * 180.0) / (a / sqrtMagic * cos(radLat) * M_PI);
-    mgLat = wgLat + dLat;
-    mgLon = wgLon + dLon;
-    
-    resPoint.latitude = mgLat;
-    resPoint.longitude = mgLon;
-    return resPoint;
-}
-
-
-
-double transformLat(double x, double y) {
++(double)transformLat:(double)x bdLon:(double)y
+{
     double ret = LAT_OFFSET_0(x, y);
     ret += LAT_OFFSET_1;
     ret += LAT_OFFSET_2;
@@ -68,7 +39,8 @@ double transformLat(double x, double y) {
     return ret;
 }
 
-double transformLon(double x, double y) {
++(double)transformLon:(double)x bdLon:(double)y
+{
     double ret = LON_OFFSET_0(x, y);
     ret += LON_OFFSET_1;
     ret += LON_OFFSET_2;
@@ -76,7 +48,8 @@ double transformLon(double x, double y) {
     return ret;
 }
 
-bool outOfChina(double lat, double lon) {
++(BOOL)outOfChina:(double)lat bdLon:(double)lon
+{
     if (lon < RANGE_LON_MIN || lon > RANGE_LON_MAX)
         return true;
     if (lat < RANGE_LAT_MIN || lat > RANGE_LAT_MAX)
@@ -84,21 +57,36 @@ bool outOfChina(double lat, double lon) {
     return false;
 }
 
-CLLocationCoordinate2D bd09Encrypt(double gg_lat, double gg_lon)
++(CLLocationCoordinate2D)gcj02Encrypt:(double)ggLat bdLon:(double)ggLon
 {
-    CLLocationCoordinate2D bdPt;
-    double x = gg_lon, y = gg_lat;
-    double z = sqrt(x * x + y * y) + 0.00002 * sin(y * M_PI);
-    double theta = atan2(y, x) + 0.000003 * cos(x * M_PI);
-    bdPt.longitude = z * cos(theta) + 0.0065;
-    bdPt.latitude = z * sin(theta) + 0.006;
-    return bdPt;
+    CLLocationCoordinate2D resPoint;
+    double mgLat;
+    double mgLon;
+    if ([self outOfChina:ggLat bdLon:ggLon]) {
+        resPoint.latitude = ggLat;
+        resPoint.longitude = ggLon;
+        return resPoint;
+    }
+    double dLat = [self transformLat:(ggLon - 105.0)bdLon:(ggLat - 35.0)];
+    double dLon = [self transformLon:(ggLon - 105.0) bdLon:(ggLat - 35.0)];
+    double radLat = ggLat / 180.0 * M_PI;
+    double magic = sin(radLat);
+    magic = 1 - jzEE * magic * magic;
+    double sqrtMagic = sqrt(magic);
+    dLat = (dLat * 180.0) / ((jzA * (1 - jzEE)) / (magic * sqrtMagic) * M_PI);
+    dLon = (dLon * 180.0) / (jzA / sqrtMagic * cos(radLat) * M_PI);
+    mgLat = ggLat + dLat;
+    mgLon = ggLon + dLon;
+    
+    resPoint.latitude = mgLat;
+    resPoint.longitude = mgLon;
+    return resPoint;
 }
 
-CLLocationCoordinate2D bd09Decrypt(double bd_lat, double bd_lon)
++(CLLocationCoordinate2D)bd09Decrypt:(double)bdLat bdLon:(double)bdLon
 {
     CLLocationCoordinate2D gcjPt;
-    double x = bd_lon - 0.0065, y = bd_lat - 0.006;
+    double x = bdLon - 0.0065, y = bdLat - 0.006;
     double z = sqrt(x * x + y * y) - 0.00002 * sin(y * M_PI);
     double theta = atan2(y, x) - 0.000003 * cos(x * M_PI);
     gcjPt.longitude = z * cos(theta);
@@ -106,25 +94,36 @@ CLLocationCoordinate2D bd09Decrypt(double bd_lat, double bd_lon)
     return gcjPt;
 }
 
-@implementation JZLocationConverter
++(CLLocationCoordinate2D)bd09Encrypt:(double)ggLat bdLon:(double)ggLon
+{
+    CLLocationCoordinate2D bdPt;
+    double x = ggLon, y = ggLat;
+    double z = sqrt(x * x + y * y) + 0.00002 * sin(y * M_PI);
+    double theta = atan2(y, x) + 0.000003 * cos(x * M_PI);
+    bdPt.longitude = z * cos(theta) + 0.0065;
+    bdPt.latitude = z * sin(theta) + 0.006;
+    return bdPt;
+}
+
 + (CLLocationCoordinate2D)wgs84ToGcj02:(CLLocationCoordinate2D)location
 {
-    return gcj02Encrypt(location.latitude, location.longitude);
+    return [self gcj02Encrypt:location.latitude bdLon:location.longitude];
 }
 
 + (CLLocationCoordinate2D)wgs84ToBd09:(CLLocationCoordinate2D)location
 {
-    CLLocationCoordinate2D gcj02Pt = gcj02Encrypt(location.latitude, location.longitude);
-    return bd09Encrypt(gcj02Pt.latitude, gcj02Pt.longitude);
+    CLLocationCoordinate2D gcj02Pt = [self gcj02Encrypt:location.latitude
+                                                  bdLon:location.longitude];
+    return [self bd09Encrypt:gcj02Pt.latitude bdLon:gcj02Pt.longitude] ;
 }
 
 + (CLLocationCoordinate2D)gcj02ToBd09:(CLLocationCoordinate2D)location
 {
-    return  bd09Encrypt(location.latitude, location.longitude);
+    return  [self bd09Encrypt:location.latitude bdLon:location.longitude];
 }
 
 + (CLLocationCoordinate2D)bd09ToGcj02:(CLLocationCoordinate2D)location
 {
-    return  bd09Decrypt(location.latitude, location.longitude);
+    return [self bd09Decrypt:location.latitude bdLon:location.longitude];
 }
 @end
