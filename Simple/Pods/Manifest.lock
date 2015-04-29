@@ -1,0 +1,14 @@
+PODS:
+  - JZLocationConverter
+
+DEPENDENCIES:
+  - JZLocationConverter (from `../`)
+
+EXTERNAL SOURCES:
+  JZLocationConverter:
+    :path: ../
+
+SPEC CHECKSUMS:
+  JZLocationConverter: df64537177bbde81f504db3d6ac137419fc50060
+
+COCOAPODS: 0.36.3

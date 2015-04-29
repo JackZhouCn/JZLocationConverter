@@ -7,7 +7,8 @@
 //
 
 #import "ViewController.h"
-#import "JZLocationConverter.h"
+#import <JZLocationConverter.h>
+
 @interface ViewController ()
 @property(nonatomic,strong)CLLocationManager * manger;
 @end
