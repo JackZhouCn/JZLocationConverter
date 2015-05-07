@@ -6,7 +6,7 @@ JZLocationConverter
 JZLocationConverter 支持 [CocoaPods](http://cocoapods.org).  添加下面配置到你的 Podfile:
 
 ```ruby
-pod 'JZLocationConverter', :git => 'https://github.com/JackZhouCn/JZLocationConverter.git'
+pod 'JZLocationConverter'
 ```
 
 
