@@ -3,9 +3,9 @@
   "platforms": {
     "ios": "6.0"
   },
-  "summary": "NS系列库扩充方法.",
+  "summary": "坐标转换小工具",
   "authors": {
-    "jackZhou": 4686150"@qq.com"
+    "JackZhou": 4686150"@qq.com"
   },
   "source": "./",
   "source_files": "JZLocationConverter/*.{h,m}",
