@@ -3,14 +3,16 @@
   "platforms": {
     "ios": "6.0"
   },
-  "summary": "坐标转换小工具",
+  "summary": "坐标转换工具.",
+  "homepage": "",
   "authors": {
-    "JackZhou": 4686150"@qq.com"
+    "JackZhou": "4686150@qq.com"
   },
   "source": "./",
   "source_files": "JZLocationConverter/*.{h,m}",
   "requires_arc": true,
   "license": {
-    "type": "MIT"
+    "type": "MIT",
+    "text": "This library is distributed under the terms of the MIT/X11."
   }
 }
