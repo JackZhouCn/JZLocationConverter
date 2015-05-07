@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.homepage = 'https://github.com/JackZhouCn'
   s.authors  = { 'JackZhou' => '4686150@qq.com' }
   s.source   = {
-    :git => 'https://github.com/JackZhouCn/JZLocationConverter',
+    :git => 'https://github.com/qzs21/JZLocationConverter',
     :tag => s.version
   }
   s.source_files = 'JZLocationConverter/*.{h,m}'
