@@ -3,16 +3,16 @@
   "platforms": {
     "ios": "6.0"
   },
-  "summary": "NS系列库扩充方法.",
-  "homepage": "http://blog.isteven.cn",
+  "summary": "坐标转换工具.",
+  "homepage": "",
   "authors": {
-    "Steven": "qzs21@qq.com"
+    "JackZhou": "4686150@qq.com"
   },
   "source": "./",
   "source_files": "JZLocationConverter/*.{h,m}",
   "requires_arc": true,
   "license": {
     "type": "MIT",
-    "text": "Copyright 2014. Arash Payan. This library is distributed under the terms of the MIT/X11."
+    "text": "This library is distributed under the terms of the MIT/X11."
   }
 }
