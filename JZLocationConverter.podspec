@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name     = 'JZLocationConverter'
   s.version  = '1.0.0'
-  s.license  = { :type => 'JackZhou' }
+  s.license  = { :type => 'MIT' }
   s.summary  = '坐标转换工具.'
   s.homepage = 'https://github.com/JackZhouCn'
   s.authors  = { 'JackZhou' => '4686150@qq.com' }
