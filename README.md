@@ -1,6 +1,6 @@
 JZLocationConverter
 ===================
-
+[Swift版本](https://github.com/JackZhouCn/JZLocationConverter-Swift)(使用边境线坐标，判断是否中国大陆)
 ### Quick start
 
 JZLocationConverter 支持 [CocoaPods](http://cocoapods.org).  添加下面配置到你的 Podfile:
